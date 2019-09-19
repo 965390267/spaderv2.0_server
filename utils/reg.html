@@ -1,0 +1,41 @@
+<script>
+
+  // #data > tbody > tr:nth-child(1) tr
+  // #data > tbody > tr:nth-child(1) > td:nth-child(1) > h1 > a  title&&href
+  // #data > tbody > tr:nth-child(1) > td:nth-child(2) time
+
+//var str=" body > div.box > div.i_center > div.e_cen > div.e_right > div > div.etext > ul.list > li:nth-child(1)"
+var str="#data > tbody > tr:nth-child(2)>li:nth-child(1)>li:nth-child(3)  "
+let reg=/:nth-child\(\d\)$/g
+ console.log(str.trim().replace(reg,' '));
+console.log(str.match(reg));
+// body > div.box > div.i_center > div.e_cen > div.e_right > div > div.etext > ul.list
+// body > div.box > div.i_center > div.e_cen > div.e_right > div > div.etext > ul.list > li:nth-child(1)
+// console.log(reg.exec(str));
+var result;
+#govinfoList > ul:nth-child(1) > li:nth-child(1)
+#govinfoList > ul:nth-child(1) > li:nth-child(1) > span.syh
+#govinfoList > ul:nth-child(1) > li:nth-child(2)
+#govinfoList > ul:nth-child(1) > li:nth-child(2) > span.syh
+
+#content > div.mainContent > div > div.mBd > ul > li.first
+#content > div.mainContent > div > div.mBd > ul > li:nth-child(2)
+#content > div.mainContent > div > div.mBd > ul > li:nth-child(3)
+
+body > div.ty-cont-gklb.clearfix > div.tb.clearfix > table:nth-child(1)
+#idData
+#idData > tbody > tr:nth-child(1)
+#idData > tbody > tr:nth-child(2)
+#idData > tbody > tr:nth-child(3)
+
+while ((result = reg.exec(str)) != null)  {
+//   document.write(result);
+//   document.write("<br />");
+//   document.write(patt.lastIndex);
+ }
+function MainSelector(str){
+  let reg=/:nth-child\(\d\)$/g
+  return str.trim().replace(reg,' ')
+}
+ 
+</script>

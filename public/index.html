@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+	<title>爬虫推送</title>
+
+	<style>
+		html {
+			background-image: url(./images/sinablogb.jpg);
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+
+		body {
+			margin: 0px auto;
+			width: 800px;
+		}
+
+		h2 {
+			text-align: center;
+		}
+
+		/* -------------------------------------- */
+
+		ol {
+			border-radius: 8px;
+			box-shadow: 0px 0px 30px 2px #ccc;
+			opacity: .9;
+			background: #fff;
+			counter-reset: li;
+			list-style: none;
+			*list-style: decimal;
+			font: 15px 'trebuchet MS', 'lucida sans';
+			padding: 0;
+			margin-bottom: 4em;
+			/* text-shadow: 0 1px 0 rgba(255, 255, 255, .5); */
+		}
+
+		ol ol {
+			margin: 0 0 0 2em;
+		}
+
+		a {
+			text-decoration: none;
+			color: #555;
+		}
+
+		a:hover {
+			color: #fa8c16;
+			font-size: 18px;
+		}
+
+		.nextpage {
+			width: 40%;
+			margin: 0 auto;
+			margin-top: 20px;
+			text-align: center;
+		}
+
+		.next:hover {
+			cursor: pointer;
+		}
+
+		.last:hover {
+			cursor: pointer;
+		}
+
+		.next {
+
+			display: inline-block;
+		}
+
+		.current {
+			display: inline-block;
+			padding: 0 15px;
+		}
+
+		.activepage {
+			color: red;
+			font-size: 16px;
+		}
+
+		.last {
+			display: inline-block;
+		}
+
+		/* -------------------------------------- */
+
+		.circle-list li {
+			height: 190px;
+			padding: 1.3em;
+			border-bottom: 1px dashed #ccc;
+		}
+.content{
+	height: 70px;
+	overflow: hidden;
+}
+		.circle-list h3 {
+			position: relative;
+			margin: 0;
+			color: #333;
+		}
+
+		.circle-list .time {
+			margin: 0;
+			color: #666;
+		}
+
+		.circle-list h3:before {
+			content: counter(li);
+			counter-increment: li;
+			position: absolute;
+			z-index: -1;
+			left: -1.3em;
+			top: -.8em;
+			background: #f5f5f5;
+			height: 1.5em;
+			width: 1.5em;
+			border: .1em solid rgba(0, 0, 0, .05);
+			text-align: center;
+			font: italic bold 1em/1.5em Georgia, Serif;
+			color: #ccc;
+			-moz-border-radius: 1.5em;
+			-webkit-border-radius: 1.5em;
+			border-radius: 1.5em;
+			-webkit-transition: all .2s ease-out;
+			-moz-transition: all .2s ease-out;
+			-ms-transition: all .2s ease-out;
+			-o-transition: all .2s ease-out;
+			transition: all .2s ease-out;
+		}
+
+		.circle-list li:hover h3:before {
+			background-color: #ffd797;
+			border-color: rgba(0, 0, 0, .08);
+			border-width: .2em;
+			color: #444;
+			-webkit-transform: scale(1.5);
+			-moz-transform: scale(1.5);
+			-ms-transform: scale(1.5);
+			-o-transform: scale(1.5);
+			transform: scale(1.5);
+		}
+		.go{
+			display: inline-block;
+			width: 40px;
+			background: #69c0ff;
+			padding: 5px;
+			border-radius: 4px;
+		}
+		.go:hover{
+			cursor: pointer;
+			opacity: .6;
+		}
+		input{
+			width: 120px;
+		}
+	</style>
+</head>
+
+<body>
+	<h2>贵州爬虫信息列表</h2>
+	<ol class="circle-list" id="app">
+		<li v-for='(item,index) in list' :key=index>
+			<h3>来源：{{item.address}}</h3>
+			<a :href=item.href target="_blank">
+				<p class="content">详情：{{item.title}}</p>
+			</a>
+			<p class="time">时间:{{item.time}}</p>
+		</li>
+		<div class="nextpage">
+			<div class="last" @click='last()'>上一页</div>
+			<div class="current">当前第<span class="activepage">{{pageIndex}}</span>页</div>
+			<div class="next" @click='next()'>下一页</div>
+			<div class="totalpage">总共{{maxpage}}页</div>
+			<div class="putwrap">
+				<input type="number" placeholder="输入页码跳到指定页" v-model.number.trim='pagesize'>
+				<div class="go" @click='go'>go</div>
+			</div>
+			
+		</div>
+	</ol>
+
+
+	<script src="vue.js"></script>
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				pagesize:'',
+				list: [],
+				pageIndex: 1,
+				maxpage: ''
+			},
+			methods: {
+			
+				go(){
+
+if(this.pagesize>this.maxpage){
+	return alert('输入的页数超过最大页数')
+}
+if(!this.pagesize)return;
+this.pageIndex=this.pagesize;
+this.pagesize='';
+this.req(this.pageIndex);
+				},
+				next() {
+					if (this.maxpage == this.pageIndex) {
+						return;
+					}
+					this.pageIndex++;
+					
+					this.req(this.pageIndex)
+				},
+				last() {
+					if (this.pageIndex == 1) return;
+					this.pageIndex--;
+				
+					this.req(this.pageIndex)
+				},
+				req(page) {
+					fetch('http://39.105.130.42:3002/api', {
+						method: 'post',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							pageSize: 5,
+							currentPage: page
+						})
+					}).then(res =>
+						res.json()
+					).then(res => {
+
+						this.list = res.data;
+						this.maxpage = Math.ceil(res.count / 5);
+					})
+				}
+			},
+			mounted() {
+				this.req(1)
+			},
+		})
+	</script>
+
+</html>
