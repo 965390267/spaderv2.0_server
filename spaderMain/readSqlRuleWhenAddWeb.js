@@ -5,12 +5,12 @@ var router = express.Router();
 var conf=require('./rule')
 /* GET users listing. */
 var index=1;
-router.get('/testread', function(req, res, next) {
-    index++
-    console.log(conf);
-    conf.push({'name':Math.random(),age:index})
-//   const html = fs.readFileSync('../index.html', 'utf-8')
-  res.send();
+router.get('/submitspiderrule', function(req, res, next) {
+    // index++
+   let {site,selector,title,time,href}=req.body||req.query;
+    conf.push({'site':site,selector:selector,title:title,time:time,href:href})
+   console.log(conf);
+    res.json(req.body)
 });
 
 

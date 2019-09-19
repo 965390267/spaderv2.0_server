@@ -1,2 +1,3 @@
-let conf=[{name:'zzh',age:18}]
+let conf=[]
+/* 爬虫规则组，每间隔一段时间从这里取规则，只需在每次添加规则的时候在重新读取数据库的爬虫规则到这儿，避免多次操作数据库 */
 module.exports=conf

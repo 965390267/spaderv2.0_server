@@ -1,3 +1,5 @@
-function Main_query_Select(selector){
-    selector.
-}
+
+function MainSelector(selector){
+    let reg=/:nth-child\(\d\)$/g
+    return selector.trim().replace(reg,' ')
+  }

@@ -1,6 +1,6 @@
 var schedule = require('node-schedule');
 var request = require('../utils/request.js');
-var analysis = require('../analysis'); //爬虫规则处理
+
 var conf=require('./rule')
 function spader() {
 console.log('dddd');
