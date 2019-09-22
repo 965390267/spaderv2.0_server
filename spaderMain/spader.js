@@ -2,8 +2,10 @@ var schedule = require('node-schedule');//定时任务模块
 var fetch=require('./fetch');//所有请求的任务同步返回
 var conf=require('./rule')//爬虫任务列表，直接从本地内存中取，避免不必要的读取操作数据库，只有提交了爬虫规则的时候才从数据库读出更新任务列表
 var analysis=require('./ruleanalysis')//对爬虫输入的规则的参数进行处理，
+
 function spader() {
 console.log('start');
+console.log(conf);
 
   //  var rule2  = new schedule.RecurrenceRule();  //定时启动爬虫开始抓取
   // var times2    = [1,10,20,30,40,50,60];  
@@ -14,11 +16,14 @@ console.log('start');
     rule1.second  = times1;  
     // schedule.scheduleJob(rule1, function(){  
       fetch().then((res)=>{
-        for (let index = 0; index < res.length; index++) {
-          analysis(res[index],conf[index],function(result){
-              console.log(result);
-          })     
+        if(conf.length>0){
+          for (let index = 0; index < res.length; index++) {
+            analysis(res[index],conf[index],function(result){
+                console.log(result);
+            })     
+          }
         }
+
       })
     // });   
 }
