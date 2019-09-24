@@ -1,8 +1,7 @@
 const https = require("https");
 const token = "919caa447462c944bec7dc51f786e9c12ee7833955108d8efeffe201de01ef55"; //钉钉token
 const url = 'oapi.dingtalk.com'; //钉钉基础地址
-const mobiles = ['13629642585']; //被at的联系人的电话
-
+const mobiles = ['1363333333']; //被at的联系人的电话
 
 function sendDD(content) {
   var parms= {

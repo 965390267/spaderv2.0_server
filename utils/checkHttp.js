@@ -11,9 +11,7 @@ function replaceRelativeWebSite(Route,WebSite){
     if(cheekhttp(Route)){//如果是绝对路径
         return Route
     }else{
-        let leavel1=/^(\.\/|\/|\w)\w/i
-        let leavel2=/^(\.\.\/)\w/i;
-        let splitWebSiteArr= splitWebSite(WebSite);
+      let leavel1=/^(\.\/|\/|\w)\w/i, leavel2=/^(\.\.\/)\w/i, splitWebSiteArr= splitWebSite(WebSite);
        if(leavel1.test(Route)){//是否是当前路径下的
           let ignoreDot=/^(\.|\/)//* 匹配.或者/ */
           let pattenRoute=/\w\?/i

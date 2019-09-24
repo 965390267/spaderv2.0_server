@@ -27,6 +27,15 @@ console.log('start');
           // console.log(conf[index].site,index);    
           analysis(ret,conf[index],function(result){
                       console.log(result);
+                        // if (currentMonth == month && currentDay == day) {  
+  //   saveDate({
+  //      title:title, //获取到标题
+  //     href:'http://rsj.zunyi.gov.cn'+href ,
+  //     // oid:'http://www.ynjy.cn'+time,
+  //     oid:encodeURI(title.slice(0,15))+time,
+  //     time:time2,
+  //     from:from});//保存进数据库
+  // }
                   })
         })    
       }
@@ -34,14 +43,6 @@ console.log('start');
     // });   
 }
 
-// request('gbk', 'http://www.ynqjrs.cn/index.asp?Twzbh=1', function (sres) {
-
-//   spader2(sres)
-// })
-// request('gbk', 'http://www.rsj.yuxi.gov.cn/renshe/article.g?m=listRenshe&catecode=100010035', function (sres) {
-
-//   spader3(sres)
-// })
 
 module.exports = spader;
 
