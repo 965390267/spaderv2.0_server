@@ -1,9 +1,10 @@
 
-let conf = [{ site: 'http://www.rsj.yuxi.gov.cn/renshe/article.g?m=listRenshe&catecode=100010035',
+let conf = [
+    { site: 'http://www.rsj.yuxi.gov.cn/renshe/article.g?m=listRenshe&catecode=100010035',
  MainSelector: 'body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1)',
  charset:'gbk'
 },
-// {site:'http://rst.guizhou.gov.cn/zwgk/xxgkml/?url=55946&ClassInfoId=55946',MainSelector:'#data > tbody > tr:nth-child(1)',charset:'gbk'},
+ {site:'http://www.ynws.gov.cn/zfxxgk/bmxxgk/zjyj.htm',MainSelector:'body > div.newmewbj > div > div.news423con > div.new423rig > div.newlist24 > ul >li',charset:'utf'},
 // {site:'http://www.ynqjrs.cn/index.asp?Twzbh=1',MainSelector:'#center > div.xinxi > div.xinxizhong > div:nth-child(3) > div > ul > li:nth-child(1)',charset:'gbk'},
 
 ]

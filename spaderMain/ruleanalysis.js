@@ -1,7 +1,7 @@
 var cheerio = require('cheerio');
 var saveDate = require('../dbmodel/save')
 var SelectorAnalyze = require('../utils/querySelectFormat')
-
+let replaceRelativeWebSite=require('../utils/checkHttp')
 var arr=[]
 function analysy(sres, conf, cb) {
   var currentDay = new Date().getDate();
@@ -11,13 +11,14 @@ function analysy(sres, conf, cb) {
   }); //用cheerio解析页面数据
   var from = $('title').text();
   console.log('----------------------------------------------------------');
+  
   let ingoreTag = SelectorAnalyze(conf.MainSelector)
  // console.log(conf.MainSelector);
-  let result = deepTree($(ingoreTag),$)
-console.log(result);
+ $(ingoreTag).each((index,ele)=>{
+  let result = deepTree($(ele),$,conf.site)
+ })
 
   // console.log($(ele).find(conf.HrefSelector).text()+'-------'+$(ele).find(conf.TimeSelector).text());
-
   // cb && cb(arr)
   // if (currentMonth == month && currentDay == day) {  
   //   saveDate({
@@ -31,7 +32,7 @@ console.log(result);
 }
 
 
-function deepTree(root, $) {
+function deepTree(root, $,site) {
   var obj = {};
   let child=$(root).contents()
   if (child!=null) {
@@ -43,6 +44,8 @@ function deepTree(root, $) {
       let href = $(tagNode).attr('href')
       obj.title = title;
       obj.href = href;
+      
+     href=  replaceRelativeWebSite(href,site)
       console.log(title,href);      
     }
     let tagNodeText =$(tagNode).text().trim()
@@ -55,7 +58,7 @@ function deepTree(root, $) {
     } 
    // arr.push(obj)
     for (let index = 0; index <child.length; index++) {
-      deepTree(child[index], $)
+      deepTree(child[index], $,site)
     }
   }
   return obj;
