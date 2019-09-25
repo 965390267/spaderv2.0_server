@@ -13,31 +13,54 @@ function replaceRelativeWebSite(Route,WebSite){
     }else{
       let leavel1=/^(\.\/|\/|\w)\w/i, leavel2=/^(\.\.\/)\w/i, splitWebSiteArr= splitWebSite(WebSite);
        if(leavel1.test(Route)){//是否是当前路径下的
+
           let ignoreDot=/^(\.|\/)//* 匹配.或者/ */
+
           let pattenRoute=/\w\?/i
+
           if(ignoreDot.test(Route)){//如果以.或者/开头则过滤
+
             return `${splitWebSiteArr[1]}${splitWebSiteArr[2]}${ splitWebSiteArr[3]||''}/${Route.replace(ignoreDot,'')}`
+
           }else if(pattenRoute.test(Route)){   
                     
             let path=splitWebSiteArr[4];
+
             let  splitPath=path.split('/')
-            splitPath.splice(splitPath.length-1,1)         
+
+            splitPath.splice(splitPath.length-1,1)     
+
             return `${splitWebSiteArr[1]}${splitWebSiteArr[2]}${ splitWebSiteArr[3]||''}${splitPath.join('/')}/${Route}`
+
           }else{
+
             return `${splitWebSiteArr[1]}${splitWebSiteArr[2]}${ splitWebSiteArr[3]||''}${Route}`
+
           } 
        }else if(leavel2.test(Route)){/* 类似../ */
+
         let path=splitWebSiteArr[4];
+
         let ignoreTwoDot=  Route.split('../')[1]
+
        let  splitPath=path.split('/')
+
        splitPath.splice(splitPath.length-2,2)
+
         return `${ splitWebSiteArr[1]}${ splitWebSiteArr[2]}${ splitWebSiteArr[3]||''}/${splitPath}${ignoreTwoDot}`
+
        }else{
+
         let path=splitWebSiteArr[4];
+
         let ignoreTwoDot=  Route.split('../../')[1]
+
        let  splitPath=path.split('/')
+
        splitPath.splice(splitPath.length-3,3)
+
         return `${ splitWebSiteArr[1]}${ splitWebSiteArr[2]}${ splitWebSiteArr[3]||''}/${splitPath}${ignoreTwoDot}`
+        
        }
     }
 }

@@ -3,7 +3,7 @@ var conf = {
     host: 'rm-2ze092927t0v6r2w4bo.mysql.rds.aliyuncs.com',
     user: 'product',
     password: 'Jkm9j%cunvW@*',
-    database: 'spider_guizhou'
+    database: 'jiaoyu'
 };
 
 //向外暴露方法

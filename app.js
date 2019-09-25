@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var SPADER_START=require('./spaderMain/spader.js');//爬虫启动入口
+var SPADER_START=require('./spiderMain/spider.js');//爬虫启动入口
 var expressJWT = require('express-jwt');
 // var proxyMiddleWare = require("http-proxy-middleware");
 // var proxyPath = "http://api.zhuishushenqi.com/cats/lv2/statistics";//目标后端服务地址(公司同事电脑地址)
@@ -12,7 +12,7 @@ var expressJWT = require('express-jwt');
  
 // }};
 var indexRouter = require('./routes/index');
- var spaderRouter = require('./spaderMain/readSqlRuleWhenAddWeb');
+ var spaderRouter = require('./spiderMain/readSqlRuleWhenAddWeb');
 var loginRouter=require('./routes/users')
 var app = express();
 app.all("*",function(req,res,next){
@@ -39,20 +39,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {   
       //  这个需要根据自己的业务逻辑来处理（ 具体的err值 请看下面）
     res.status(401).send('invalid token...');
   }
 });
-
 app.use(expressJWT({
   secret: 'secret'   
 }).unless({
-  path: ['/getToken']  //除了这个地址，其他的URL都需要验证
+  path: [/\/verification5555/,/\/login/]  //除了这个地址，其他的URL都需要验证
 }));
+
 app.use('/', indexRouter);
- app.use('/spader', spaderRouter);
+ app.use('/spider', spaderRouter);
  app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler

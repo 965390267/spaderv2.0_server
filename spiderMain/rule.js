@@ -2,6 +2,9 @@
 let conf = [
     { site: 'http://www.rsj.yuxi.gov.cn/renshe/article.g?m=listRenshe&catecode=100010035',
  MainSelector: 'body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1)',
+ TitleSelector:'',
+ TimeSelector:'',
+ area:'yn',
  charset:'gbk'
 },
 // {site:'http://www.ynws.gov.cn/zfxxgk/bmxxgk/zjyj.htm',MainSelector:'body > div.newmewbj > div > div.news423con > div.new423rig > div.newlist24 > ul >li',charset:'utf'},
@@ -16,10 +19,11 @@ module.exports = conf
 //body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1) > li > a
 //body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1) > li > span > span > font
 // request('gbk', 'http://www.ynqjrs.cn/index.asp?Twzbh=1', function (sres) {
-
 //   spader2(sres)
 // })
 // request('gbk', 'http://www.rsj.yuxi.gov.cn/renshe/article.g?m=listRenshe&catecode=100010035', function (sres) {
 
 //   spader3(sres)
 // })
+//body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1) > li > a
+//body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1) > li > span

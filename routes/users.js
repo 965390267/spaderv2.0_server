@@ -5,7 +5,7 @@ const crypto = require('crypto')
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/login', function(req, res, next) {
+router.post('/login', function(req, res, next) {
   let {password}=req.body;
   if(password=='123456'){
     const user = {/* jwt生成必须参数 */
