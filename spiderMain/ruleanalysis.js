@@ -1,5 +1,4 @@
 var cheerio = require('cheerio');
-var saveDate = require('../dbmodel/save')
 var SelectorAnalyze = require('../utils/querySelectFormat')
 let replaceRelativeWebSite=require('../utils/checkHttp')
 let formatTime=require('../utils/timeFormat.js')

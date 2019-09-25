@@ -5,13 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var SPADER_START=require('./spiderMain/spider.js');//爬虫启动入口
 var expressJWT = require('express-jwt');
+
 // var proxyMiddleWare = require("http-proxy-middleware");
 // var proxyPath = "http://api.zhuishushenqi.com/cats/lv2/statistics";//目标后端服务地址(公司同事电脑地址)
 // var proxyOption ={target:proxyPath,changeOrigin:true, pathRewrite: {
 //   // '^/api' : '/',     
  
 // }};
-var indexRouter = require('./routes/index');
+var indexRouter = require('./routes/rule_list');
  var spaderRouter = require('./spiderMain/readSqlRuleWhenAddWeb');
 var loginRouter=require('./routes/users')
 var app = express();
@@ -19,7 +20,7 @@ app.all("*",function(req,res,next){
   //设置允许跨域的域名，*代表允许任意域名跨域
   res.header("Access-Control-Allow-Origin","*");
   //允许的header类型
-  res.header("Access-Control-Allow-Headers","content-type");
+  res.header("Access-Control-Allow-Headers","*");
   //跨域允许的请求方式 
   res.header("Access-Control-Allow-Methods","DELETE,PUT,POST,GET,OPTIONS");
   if (req.method.toLowerCase() == 'options')
@@ -29,7 +30,7 @@ app.all("*",function(req,res,next){
 })
 
 
-  SPADER_START();//启动爬虫程序入口
+SPADER_START();//启动爬虫程序入口
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

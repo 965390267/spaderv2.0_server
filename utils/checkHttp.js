@@ -7,7 +7,7 @@ function splitWebSite(WebSite){/* 返回一个数字，下标0全部，{1}http:/
     return parse_url.exec(WebSite);
 }
 
-function replaceRelativeWebSite(Route,WebSite){
+function replaceRelativeWebSite(Route,WebSite){//如果是绝对路径直接返回否则传入基础地址和相对路径拼接
     if(cheekhttp(Route)){//如果是绝对路径
         return Route
     }else{

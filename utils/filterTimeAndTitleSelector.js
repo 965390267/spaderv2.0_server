@@ -14,10 +14,11 @@ function filterTag(mainselector,selector){//如果高级用户输入精确匹配
        str+=mainSele.charAt(index)
      }
    }
-  if(/^>/.test(str)) {//去除>,子代选择器
-    return str.replace(/^>/,'');
-  }
-  return null
+ 
+  let shift= str.split('>')
+   shift.shift()
+   return shift.join('>')
+  
 }
 module.exports=filterTag
 //body > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > div > ul:nth-child(1)

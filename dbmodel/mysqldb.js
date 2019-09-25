@@ -13,12 +13,15 @@ module.exports = {
         var connection = mysql.createConnection(conf);
         connection.connect(function (err) {
             if (err) {
+                console.log(err);
+                
                 console.log('数据库链接失败');
                 throw err;
             }
             //开始数据操作
             connection.query(sql, params, function (err, results, fields) {
                 if (err) {
+                    console.log(err);
                     console.log('数据操作失败');
                     //  console.log(err);
                 }
