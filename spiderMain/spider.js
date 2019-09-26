@@ -5,7 +5,7 @@ var analysis = require('./ruleanalysis')//对爬虫输入的规则的参数进�
 var request = require('../utils/request.js');//请求库模块
 var saveDate = require('../dbmodel/save')
 var mysql = require('../dbmodel/mysqldb');
-
+var conf = require('./rule')
 function spider() {
   console.log('start');
    initDateBase();//初始化数据库
@@ -21,12 +21,12 @@ function spider() {
   });   
 }
 function Main(){
-  var conf = require('./rule')
-  if (conf.length > 0) {
-    for (let index = 0; index < conf.length; index++) {
-      request(conf[index].charset || 'utf', conf[index].site).then(ret => {
+let cloneConfObj=Object.assign({},conf)
+  if (cloneConfObj.length > 0) {
+    for (let index = 0; index < cloneConfObj.length; index++) {
+      request(cloneConfObj[index].charset || 'utf', cloneConfObj[index].site).then(ret => {
  
-        analysis(ret, conf[index], function (result) {
+        analysis(ret, cloneConfObj[index], function (result) {
           // console.log(result);
           // if (currentMonth == month && currentDay == day) {
           //   saveDate({
@@ -46,10 +46,11 @@ function Main(){
 }
 
 function initDateBase(){
-  var conf = require('./rule')
   mysql.query("SELECT * from spider_rule", function (results, fields) {
-    console.log(fields);
-    conf.push(fields)
+   
+    for (let index = 0; index < fields.length; index++) {
+     conf.push(fields[index])
+    }
     // res.json({ data: fields, count: count ,code:200,msg:'查询成功',status:'success'});
   })
 }

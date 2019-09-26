@@ -20,14 +20,14 @@ function analysy(sres, conf, cb) {
 
     let {site,MainSelector,TitleSelector,TimeSelector,area,charset}=conf
 
-    let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset}
+    let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}
 
     let result = deepTree($(ele),$,conf.site,obj)
 
     resultArr.push(result)
 
   }else{//对输入的title选择器和时间选择器列表选择器处理后执行{用户自行输入详细标签进行匹配}
-    let {site,MainSelector,TitleSelector,TimeSelector,area,charset}=conf
+    let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}=conf
 
    let titleTagSelector= filterTimeAndTitleSelector(conf.MainSelector,conf.TitleSelector)//列表title选择器{包括href}
 
@@ -41,7 +41,7 @@ function analysy(sres, conf, cb) {
 
   let completeHref= replaceRelativeWebSite(href,site)//对各种奇怪的路劲进行处理，拼接成完整的路径
 
-  let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,time,title,completeHref}
+  let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,time,title,completeHref,remarks}
 
   resultArr.push(obj)
   }
