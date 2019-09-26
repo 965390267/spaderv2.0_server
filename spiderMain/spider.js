@@ -7,7 +7,7 @@ var saveDate = require('../dbmodel/save')
 var mysql = require('../dbmodel/mysqldb');
 var conf = require('./rule')
 function spider() {
-  console.log('start');
+  console.log(conf);
    initDateBase();//初始化数据库
   //  var rule2  = new schedule.RecurrenceRule();  //定时启动爬虫开始抓取
   // var times2    = [1,10,20,30,40,50,60];  
@@ -21,24 +21,30 @@ function spider() {
   });   
 }
 function Main(){
-let cloneConfObj=Object.assign({},conf)
+
+let cloneConfObj=conf
+
   if (cloneConfObj.length > 0) {
+   
     for (let index = 0; index < cloneConfObj.length; index++) {
+      
       request(cloneConfObj[index].charset || 'utf', cloneConfObj[index].site).then(ret => {
  
         analysis(ret, cloneConfObj[index], function (result) {
-          // console.log(result);
-          // if (currentMonth == month && currentDay == day) {
-          //   saveDate({
-          //     title: title, //获取到标题
-          //     href: 'http://rsj.zunyi.gov.cn' + href,
-          //     // oid:'http://www.ynjy.cn'+time,
-          //     oid: encodeURI(title.slice(0, 15)) + time,
-          //     time: time2,
-          //     from: from,
-          //     area: area
-          //   });//保存进数据库
-          // }
+        
+          if (result.length>0) {
+            for (let item = 0; item < result.length; item++) {
+              saveDate({
+                title: item.title, //获取到标题
+                href: item.href,
+                oid: encodeURI(item.title.splice(0, 15)) + item.time,
+                time: item.time,
+                from: item.from,
+                area: item.area
+              });//保存进数据库       
+            }
+            
+          }
         })
       })
     }
@@ -47,11 +53,10 @@ let cloneConfObj=Object.assign({},conf)
 
 function initDateBase(){
   mysql.query("SELECT * from spider_rule", function (results, fields) {
-   
+    
     for (let index = 0; index < fields.length; index++) {
-     conf.push(fields[index])
-    }
-    // res.json({ data: fields, count: count ,code:200,msg:'查询成功',status:'success'});
+     conf.push(Object.assign({},fields[index]))
+    } 
   })
 }
 module.exports = spider;

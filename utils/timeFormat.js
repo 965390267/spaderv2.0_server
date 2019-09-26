@@ -11,7 +11,7 @@ function formatTime(time){/* 处理各种可能为时间的字符串，然后转
 
      let result=  reg.exec(noWhiteSpace); 
        
-    return `${result[1]}-${result[2]}-${result[3]}`
+    return `${result[1]}-${Number(result[2])<10?'0'+Number(result[2]):result[2]}-${Number(result[3])<10?'0'+Number(result[3]):result[3]}`
 
     }else if(noYearReg.test(noWhiteSpace)){
 
@@ -19,7 +19,7 @@ function formatTime(time){/* 处理各种可能为时间的字符串，然后转
 
     let currentYear=new Date().getFullYear();
 
-    return `${currentYear}-${result[1]}-${result[2]}`
+    return `${currentYear}-${Number(result[1])<10?'0'+Number(result[1]):result[1]}-${Number(result[2])<10?'0'+Number(result[2]):result[2]}`
 
     }
      return null;

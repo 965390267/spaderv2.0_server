@@ -5,7 +5,11 @@ let formatTime=require('../utils/timeFormat.js')
 let filterTimeAndTitleSelector=require('../utils/filterTimeAndTitleSelector')
 
 function analysy(sres, conf, cb) {
-
+  let currentDate=new Date()
+  let month=currentDate.getMonth()+1;//当前月份
+  let day=currentDate.getDate();//当天日期
+ 
+  
   var $ = cheerio.load(sres.text, {
     ignoreWhitespace: true, // 是否忽略空白符
   }); //用cheerio解析页面数据
@@ -18,14 +22,15 @@ function analysy(sres, conf, cb) {
 
    if(!conf.TimeSelector||!conf.TitleSelector){//如果没有输入时间的选择器进行精确高级匹配则依赖程序自动匹配可能为时间的字符串{系统自动匹配}
 
-    let {site,MainSelector,TitleSelector,TimeSelector,area,charset}=conf
+    let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}=conf
 
     let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}
 
     let result = deepTree($(ele),$,conf.site,obj)
-
-    resultArr.push(result)
-
+    let rule_year_month_day=result.time.split('-')
+    if(rule_year_month_day[1]==month&&rule_year_month_day[2]==day){
+      resultArr.push(result)
+    }
   }else{//对输入的title选择器和时间选择器列表选择器处理后执行{用户自行输入详细标签进行匹配}
     let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}=conf
 
@@ -43,7 +48,10 @@ function analysy(sres, conf, cb) {
 
   let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,time,title,completeHref,remarks}
 
-  resultArr.push(obj)
+  let rule_year_month_day=time.split('-')
+  if(rule_year_month_day[1]==month&&rule_year_month_day[2]==day){
+    resultArr.push(obj)
+  }
   }
  })
    cb && cb(resultArr)
