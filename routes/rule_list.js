@@ -12,12 +12,14 @@ router.all('/getlist/rule_list', function (req, res, next) {//获取网站爬取
 
   var skipnum = (currentPage - 1) * pageSize;   //跳过数
 
-  let newArr=conf.slice(skipnum,skipnum+pageSize);
+//   let newArr=conf.slice(skipnum,skipnum+pageSize);
 
-if(conf.length<pageSize){
-  newArr=conf
-}
-  res.json({ data: newArr, count: newArr.length ,code:200,msg:'查询成功',status:'success'});
+// if(conf.length<pageSize){
+//   newArr=conf
+// }
+// console.log(conf);
+
+  res.json({ data: conf, count: conf.length ,code:200,msg:'查询成功',status:'success'});
 });
 
 router.all('/deletelist/rule_list', function (req, res, next) {//根据id删除网站爬虫列表
@@ -40,7 +42,7 @@ router.all('/deletelist/rule_list', function (req, res, next) {//根据id删除�
 router.all('/editlist/rule_list', function (req, res, next) {//编辑网站爬虫列表
   let {id,update} = req.body; //id
   let str=''
-  let updateParse=JSON.parse(update)
+  let updateParse=update
     for (const key in updateParse) {//需要删除的字段，提交之后变成字符串
       str+=key+'='+'\''+updateParse[key]+'\''+','
     }
@@ -86,9 +88,9 @@ router.all('/deletelist/spider_list', function (req, res, next) {//根据id删�
   let id = req.body.id; //id
     mysql.query("DELETE  from spader where id="+id, function (results, fields) {
       if(fields){
-      res.json({ data: null ,code:200,msg:'修改成功',status:'success'});
+      res.json({ data: null ,code:200,msg:'删除成功',status:'success'});
      }else{
-      res.json({ data: null ,code:400,msg:'修改失败',status:'false'});
+      res.json({ data: null ,code:400,msg:'删除失败',status:'false'});
      }
     })
 
@@ -96,16 +98,20 @@ router.all('/deletelist/spider_list', function (req, res, next) {//根据id删�
 router.all('/editlist/spider_list', function (req, res, next) {//编辑网站爬虫列表
   let {id,update} = req.body; //id
   let str=''
-  let updateParse=JSON.parse(update)
+  console.log(update);
+  
+  let updateParse=update
     for (const key in updateParse) {//需要删除的字段，提交之后变成字符串
       str+=key+'='+'\''+updateParse[key]+'\''+','
     }
     str=str.replace(/,$/,'')
+    console.log(str);
+    
     mysql.query(`update  spader set ${str} where id=${id}`, function (results, fields) {
       if(fields){
-      res.json({ data: null ,code:200,msg:'删除成功',status:'success'});
+      res.json({ data: null ,code:200,msg:'编辑成功',status:'success'});
      }else{
-      res.json({ data: null ,code:400,msg:'删除失败',status:'false'});
+      res.json({ data: null ,code:400,msg:'编辑失败',status:'false'});
      }
     })
 });

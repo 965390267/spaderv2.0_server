@@ -50,7 +50,7 @@ app.use(function (err, req, res, next) {
 app.use(expressJWT({
   secret: 'secret'   
 }).unless({
-  path: [/\/verification5555/,/\/login/]  //除了这个地址，其他的URL都需要验证
+  path: [/\/getlist\/spider_list/,/\/login/]  //除了这个地址，其他的URL都需要验证
 }));
 
 app.use('/', indexRouter);

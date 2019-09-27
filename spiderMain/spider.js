@@ -7,21 +7,24 @@ var saveDate = require('../dbmodel/save')
 var mysql = require('../dbmodel/mysqldb');
 var conf = require('./rule')
 function spider() {
-  console.log(conf);
+ 
    initDateBase();//初始化数据库
   //  var rule2  = new schedule.RecurrenceRule();  //定时启动爬虫开始抓取
-  // var times2    = [1,10,20,30,40,50,60];  
-  // rule2.minute  = times2;  
+
   //每分钟的第30秒定时执行一次:
   var rule1 = new schedule.RecurrenceRule();
-  var times1 = [1, 12, 24, 34, 42, 52, 59];
-  rule1.second = times1;
+  // var times1 = [1, 12, 24, 34, 42, 52, 59];
+  // rule1.second = times1;
+    var times2    = [1,10,20,30,40,50,60];  
+    rule1.minute  = times2;  
   schedule.scheduleJob(rule1, function(){  
     Main()//定时启动main函数
   });   
 }
 function Main(){
-
+  let currentDate=new Date()
+  let month=currentDate.getMonth()+1;//当前月份
+  let day=currentDate.getDate();//当天日期
 let cloneConfObj=conf
 
   if (cloneConfObj.length > 0) {
@@ -31,17 +34,26 @@ let cloneConfObj=conf
       request(cloneConfObj[index].charset || 'utf', cloneConfObj[index].site).then(ret => {
  
         analysis(ret, cloneConfObj[index], function (result) {
-        
-          if (result.length>0) {
+          if (result.length>0) {    
+            console.log(result);
+            
             for (let item = 0; item < result.length; item++) {
-              saveDate({
-                title: item.title, //获取到标题
-                href: item.href,
-                oid: encodeURI(item.title.splice(0, 15)) + item.time,
-                time: item.time,
-                from: item.from,
-                area: item.area
-              });//保存进数据库       
+              let rule_year_month_day=result[item].time.split('-')
+                 if(Number(rule_year_month_day[1])==month&&Number(rule_year_month_day[2])==day){
+                  saveDate({
+                    title: item.title, //获取到标题
+                    href: item.href,
+                    site:item.site,
+                    MainSelector:item.MainSelector,
+                    TitleSelector:item.TitleSelector,
+                    TimeSelector:item.TimeSelector,
+                    charset:item.charset,
+                    oid: encodeURI(item.title.splice(0, 15)) + item.time,
+                    time: item.time,
+                    from: item.from,
+                    area: item.area
+                  });//保存进数据库   
+                }                
             }
             
           }

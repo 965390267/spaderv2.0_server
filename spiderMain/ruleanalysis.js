@@ -5,11 +5,7 @@ let formatTime=require('../utils/timeFormat.js')
 let filterTimeAndTitleSelector=require('../utils/filterTimeAndTitleSelector')
 
 function analysy(sres, conf, cb) {
-  let currentDate=new Date()
-  let month=currentDate.getMonth()+1;//当前月份
-  let day=currentDate.getDate();//当天日期
- 
-  
+
   var $ = cheerio.load(sres.text, {
     ignoreWhitespace: true, // 是否忽略空白符
   }); //用cheerio解析页面数据
@@ -19,7 +15,7 @@ function analysy(sres, conf, cb) {
 
  let resultArr=[]//经过各种数据处理后得到的标准的格式后存在在数组中返回
  $(ingoreTag).each((index,ele)=>{
-
+ 
    if(!conf.TimeSelector||!conf.TitleSelector){//如果没有输入时间的选择器进行精确高级匹配则依赖程序自动匹配可能为时间的字符串{系统自动匹配}
 
     let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}=conf
@@ -27,10 +23,11 @@ function analysy(sres, conf, cb) {
     let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}
 
     let result = deepTree($(ele),$,conf.site,obj)
-    let rule_year_month_day=result.time.split('-')
-    if(rule_year_month_day[1]==month&&rule_year_month_day[2]==day){
+    if(result.time){//避免主选择器里选择到空的但又满足智能匹配的规则的标签
       resultArr.push(result)
     }
+ 
+  
   }else{//对输入的title选择器和时间选择器列表选择器处理后执行{用户自行输入详细标签进行匹配}
     let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}=conf
 
@@ -44,14 +41,13 @@ function analysy(sres, conf, cb) {
 
   let href=$(ele).find(titleTagSelector).attr('href');//取到各种奇怪的路径
 
-  let completeHref= replaceRelativeWebSite(href,site)//对各种奇怪的路劲进行处理，拼接成完整的路径
+   href= replaceRelativeWebSite(href,site)//对各种奇怪的路劲进行处理，拼接成完整的路径
 
-  let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,time,title,completeHref,remarks}
-
-  let rule_year_month_day=time.split('-')
-  if(rule_year_month_day[1]==month&&rule_year_month_day[2]==day){
+  let obj={from,site,MainSelector,TitleSelector,TimeSelector,area,charset,time,title,href,remarks}
+  if(obj.time){//避免主选择器里选择到空的但又满足智能匹配的规则的标签
     resultArr.push(obj)
   }
+
   }
  })
    cb && cb(resultArr)
@@ -68,14 +64,11 @@ function chkstrlen(str){//检查中文字符个数
   　　　　return   strlen;
   　　}
 function deepTree(root, $,site,obj) {//深度优先搜索去搜索节点中可能为时间和网址的
-
      let child=$(root).contents()
-
   if (child!=null) {
-
      let tagNode = root 
-
-    if (tagNode.name == 'a') {
+     let tagText=$(tagNode).text().trim();
+    if (tagNode.name == 'a'&&chkstrlen(tagText)>5) {
       let title = $(tagNode).text()
 
       let href = $(tagNode).attr('href') 
@@ -87,8 +80,6 @@ function deepTree(root, $,site,obj) {//深度优先搜索去搜索节点中可�
       obj.href = absoluteHref;
     }
 
-    let tagText=$(tagNode).text().trim();
-
      if (tagNode.nodeType === 3&& chkstrlen(tagText)< 22) {
 
       if (formatTime(tagText)) {
@@ -99,7 +90,8 @@ function deepTree(root, $,site,obj) {//深度优先搜索去搜索节点中可�
       deepTree(child[index], $,site,obj)
     }
   }
-  return obj;
+  return obj
+
 }
 
 module.exports = analysy;

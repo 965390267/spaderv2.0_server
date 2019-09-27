@@ -7,7 +7,7 @@ var router = express.Router();
 /* GET users listing. */
 router.post('/login', function(req, res, next) {
   let {password}=req.body;
-  if(password=='123456'){
+  if(password=='ys123456'){
     const user = {/* jwt生成必须参数 */
       password
     }

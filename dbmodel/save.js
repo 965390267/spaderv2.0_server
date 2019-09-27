@@ -2,7 +2,7 @@
 var mysql = require('./mysqldb.js'); //mysql数据库操作方法
 var sendDD = require('../dingdingsend/index');
 function save(content) {
-      mysql.query("INSERT INTO spader(title,oid,site,MainSelector,TitleSelector,TimeSelector,time,charset,href,address,area,submittime) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", [content.title, content.oid, content.time, content.href, content.from,conf.area, +new Date()], function (results, fields) {
+      mysql.query("INSERT INTO spader(title,oid,site,MainSelector,TitleSelector,TimeSelector,time,charset,href,address,area,submittime) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", [content.title, content.oid, content.site,content.MainSelector,content.TitleSelector,content.TimeSelector,content.time,content.charset, content.href, content.from,conf.area, +new Date()], function (results, fields) {
         if (results) {
           sendDD({
             "text": content.title + content.from,
