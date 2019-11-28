@@ -29,7 +29,6 @@ app.all("*",function(req,res,next){
       next();
 })
 
-
 SPADER_START();//启动爬虫程序入口
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

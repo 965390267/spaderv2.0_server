@@ -224,15 +224,29 @@ this.req(this.pageIndex);
 				
 					this.req(this.pageIndex)
 				},
+				getParms(){
+			   var area=location.href;
+			if(area.includes('?')) {
+			 var arr= area.split('?')[1]
+			 var parms= arr.split('&')
+			 var obj={}
+			 parms.forEach(function(item,index){
+                 obj[item.split('=')[0]]=item.split('=')[1]
+			 })
+			 return obj
+			}
+			return null
+				},
 				req(page) {
-					fetch('http://39.105.130.42:3002/getlist/spider_list', {
+					fetch('http://spider.91yunshi.com/getlist/spider_list', {
 						method: 'post',
 						headers: {
 							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify({
 							pageSize: 5,
-							currentPage: page
+							currentPage: page,
+							area:decodeURIComponent(this.getParms().area)||'云南'
 						})
 					}).then(res =>
 						res.json()

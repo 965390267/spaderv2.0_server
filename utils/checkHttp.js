@@ -8,18 +8,20 @@ function splitWebSite(WebSite){/* 返回一个数字，下标0全部，{1}http:/
 }
 
 function replaceRelativeWebSite(Route,WebSite){//如果是绝对路径直接返回否则传入基础地址和相对路径拼接
-    if(cheekhttp(Route)){//如果是绝对路径
+
+  if(cheekhttp(Route)){//如果是绝对路径
+
         return Route
     }else{
       let leavel1=/^(\.\/|\/|\w)\w/i, leavel2=/^(\.\.\/)\w/i, splitWebSiteArr= splitWebSite(WebSite);
        if(leavel1.test(Route)){//是否是当前路径下的
 
-          let ignoreDot=/^(\.|\/)//* 匹配.或者/ */
+          let ignoreDot=/^[\.|\/]//* 匹配.或者/ */
 
           let pattenRoute=/\w\?/i
 
           if(ignoreDot.test(Route)){//如果以.或者/开头则过滤
-
+              
             return `${splitWebSiteArr[1]}${splitWebSiteArr[2]}${ splitWebSiteArr[3]||''}/${Route.replace(ignoreDot,'')}`
 
           }else if(pattenRoute.test(Route)){   

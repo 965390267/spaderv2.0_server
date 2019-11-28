@@ -72,11 +72,11 @@ router.all('/getlist/spider_list', function (req, res, next) {//获取各个网�
   var currentPage = req.body.currentPage || 1;  //当前第几页
 
   var skipnum = (currentPage - 1) * pageSize;   //跳过数
-
+  var area=( req.body.area||'云南').toString();
   // "SELECT * from spader order by submittime desc  limit "+ skipnum+","+pageSize
-  mysql.query("SELECT COUNT(*) FROM spader", function (results, fields) {
+  mysql.query(`SELECT COUNT(*) FROM spader  where  instr(\`area\`, '${area}' )>0`, function (results, fields) {
     var count = fields[0]['COUNT(*)'];
-    mysql.query("SELECT * from spader order by submittime desc  limit " + skipnum + "," + pageSize, function (results, fields) {
+    mysql.query(`SELECT * from spader where  instr(\`area\`, '${area}' )>0 order by submittime desc  limit ` + skipnum + "," + pageSize, function (results, fields) {
       res.json({ data: fields, count: count ,code:200,msg:'查询成功',status:'success'});
     })
   })
@@ -98,15 +98,12 @@ router.all('/deletelist/spider_list', function (req, res, next) {//根据id删�
 router.all('/editlist/spider_list', function (req, res, next) {//编辑网站爬虫列表
   let {id,update} = req.body; //id
   let str=''
-  console.log(update);
-  
   let updateParse=update
     for (const key in updateParse) {//需要删除的字段，提交之后变成字符串
       str+=key+'='+'\''+updateParse[key]+'\''+','
     }
     str=str.replace(/,$/,'')
-    console.log(str);
-    
+
     mysql.query(`update  spader set ${str} where id=${id}`, function (results, fields) {
       if(fields){
       res.json({ data: null ,code:200,msg:'编辑成功',status:'success'});

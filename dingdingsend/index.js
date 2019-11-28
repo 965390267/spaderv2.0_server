@@ -1,12 +1,13 @@
 const https = require("https");
-const token = "919caa447462c944bec7dc51f786e9c12ee7833955108d8efeffe201de01ef55"; //钉钉token
+const token = "71b8caef196044afbb5d313116b2943bcb71acd5341f39d47706eb21ea2f70ac"; //钉钉token
 const url = 'oapi.dingtalk.com'; //钉钉基础地址
 const mobiles = ['1363333333']; //被at的联系人的电话
 
-function sendDD(content) {
+function sendDD(content,ddtoken) {
+
   var parms= {
         "msgtype": "link",
-        "link": content,
+        "link":content,
         "at": {
           "atMobiles": [
             "15808801553"
@@ -18,7 +19,7 @@ function sendDD(content) {
     const req = https.request({
         hostname: url,
         port: 443,
-        path: '/robot/send?access_token=' + token,
+        path: '/robot/send?access_token=' + ddtoken,
         method: "POST",
         json: true,
         headers: {
@@ -26,12 +27,14 @@ function sendDD(content) {
         }
     });
     req.write(requestData);
-    req.on('data', function (data) {
+    req.on('data', function (data) { console.log(data);
         if (msg.statusCode === 200) {
+          
            
         }
     });
  req.on('error',function(err){
+
 
  })
     req.end();

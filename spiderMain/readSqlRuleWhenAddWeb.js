@@ -8,20 +8,20 @@ var mysql = require('../dbmodel/mysqldb.js');
 /* GET users listing. */
 router.post('/submit/spiderrule', function(req, res, next) {//提交全自动爬虫爬取的规则
 
-   let {site,MainSelector,charset,area,remarks}=req.body;
+   let {site,MainSelector,charset,area,remarks,ddtoken}=req.body;
   area=area||'云南'
   mysql.query(`SELECT * from spider_rule where site='${site}'`, function (results, fields) {
  
     if(fields.length>0){
         res.json({ data: null ,code:400,msg:'您已经添加过该站点',status:'false'});
     }else{
-        save_rule({site,MainSelector,charset,area,remarks},(result,fileds)=>{
+        save_rule({site,MainSelector,charset,area,remarks,ddtoken},(result,fileds)=>{
             if(result){
                 let id=result.insertId
-                conf.push({id,site,MainSelector,charset,area,remarks})
-                res.json({msg:'提交全自动爬虫规则处理成功',status:'success',test:conf, code:200, data:{site,MainSelector,charset,remarks,area}})
+                conf.push({id,site,MainSelector,charset,area,remarks,ddtoken})
+                res.json({msg:'提交全自动爬虫规则处理成功',status:'success',test:conf, code:200, data:{site,MainSelector,charset,remarks,area,ddtoken}})
             }else{
-            res.json({msg:'提交全自动爬虫规则处理失败',status:'false', code:400, data:{site,MainSelector,charset,remarks,area}})
+            res.json({msg:'提交全自动爬虫规则处理失败',status:'false', code:400, data:{site,MainSelector,charset,remarks,area,ddtoken}})
             }
             }) 
     }
@@ -50,22 +50,23 @@ router.post('/verification/spiderrule', function(req, res, next) {//验证当前
 
 router.post('/submit/custom/spiderrule', function(req, res, next) {//提交高级匹配爬虫爬取的规则
 
-    let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}=req.body;
+    let {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks,ddtoken}=req.body;
     area=area||'云南'
+    ddtoken=ddtoken||'';
     mysql.query(`SELECT * from spider_rule where site='${site}'`, function (results, fields) {
  
         if(fields.length>0){
             res.json({ data: null ,code:400,msg:'您已经添加过该站点',status:'false'});
         }else{
-            save_rule({site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks},(result,fileds)=>{
-     
+            save_rule({site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks,ddtoken},(result,fileds)=>{
+
                 if(result){
                     let id=result.insertId
         
-                    conf.push({id,site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks})
-                    res.json({msg:'提交自定义高级匹配规则成功',status:'success',test:conf, code:200, data: {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}})
+                    conf.push({id,site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks,ddtoken})
+                    res.json({msg:'提交自定义高级匹配规则成功',status:'success',test:conf, code:200, data: {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks,ddtoken}})
                 }else{
-                    res.json({msg:'提交自定义高级匹配规则失败',status:'false', code:400, data: {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks}})
+                    res.json({msg:'提交自定义高级匹配规则失败',status:'false', code:400, data: {site,MainSelector,TitleSelector,TimeSelector,area,charset,remarks,ddtoken}})
                 }
                 }) 
         }
